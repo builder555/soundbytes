@@ -1,5 +1,7 @@
 # soundbytes
 
+Simple system for recording sound bites, audio notes.
+
 ## Project setup
 ```
 yarn install
