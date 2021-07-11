@@ -1,17 +1,48 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <recorder
+      :record="record"
+      @start="newRecording"
+      @stop="finishRecording"
+    />
+    <div v-for=" (rec,idx) in recordings" :key="idx">
+      <audio :controls="true" :src="rec.data"></audio> {{rec.name}}
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue';
+import recorder from './components/recorder.vue';
+import SoundRecorder from './js/record';
 
 export default {
   name: 'App',
   components: {
-    HelloWorld,
+    recorder,
+  },
+  data: () => ({
+    recordings: [],
+    recording: {
+      name: '',
+      data: '',
+    },
+  }),
+  computed: {
+    record() {
+      const rec = new SoundRecorder();
+      rec.init();
+      return rec;
+    },
+  },
+  methods: {
+    newRecording(name) {
+      this.recording.name = name;
+    },
+    finishRecording(data) {
+      this.recording.data = data;
+      this.recordings.push(this.recording);
+      this.recording = { name: '', data: '' };
+    },
   },
 };
 </script>
