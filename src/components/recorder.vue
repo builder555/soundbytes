@@ -28,5 +28,13 @@ export default {
       this.record.stop();
     },
   },
+  mounted() {
+    window.addEventListener('keydown', (e) => {
+      if (e.key === ' ') this.start();
+    });
+    window.addEventListener('keyup', (e) => {
+      if (e.key === ' ') this.stop();
+    });
+  },
 };
 </script>
