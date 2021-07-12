@@ -17,9 +17,24 @@
       :key="idx"
       test-id="Recording"
     >
-      <button test-id="RecordDelete" @click="deleteRecording(idx)">x</button>
-      <audio :controls="true" :src="rec.data"></audio>
-      <a :download="rec.name" :href="rec.data">{{rec.name}}</a>
+      <a
+        class="download"
+        :download="rec.name"
+        :href="rec.data"
+        :title="'download '+rec.name"
+      >
+        {{rec.name}}
+      </a>
+      <audio
+        controls
+        :src="rec.data"
+        class="player"
+      />
+      <button
+        class="delete"
+        test-id="RecordDelete"
+        @click="deleteRecording(idx)"
+      >x</button>
     </div>
   </div>
 </template>
@@ -60,6 +75,9 @@ export default {
 </script>
 
 <style>
+html {
+  background: #1a2639;
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -67,5 +85,36 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+audio {
+  width: 350px;
+  height: 30px;
+  margin: 5px 5px -10px 5px;
+}
+
+audio::-webkit-media-controls-panel
+{
+  background:#3e4a61;
+}
+a.download {
+  background:#d9dad7;
+  color:#000;
+  text-decoration: none;
+  border:none;
+  display:inline-block;
+  padding:0px 5px;
+  line-height:30px;
+  border-radius: 3px;
+}
+a.download:hover {
+  background:#fff;
+}
+button.delete {
+  height:30px;
+  width:30px;
+  font-size:15pt;
+  background-color:#c24d2c;
+  border:none;
+  color:#fff;
 }
 </style>
