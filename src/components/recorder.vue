@@ -1,7 +1,17 @@
 <template>
   <div class="hello">
-    <button v-if="isRecording" test-id="StopRecord" @click="stop">Stop</button>
-    <button v-else test-id="StartRecord" @click="start">Record</button>
+    <button
+      tabindex="-1"
+      v-if="isRecording"
+      test-id="StopRecord"
+      @click="stop"
+    >Stop</button>
+    <button
+      tabindex="-1"
+      v-else
+      test-id="StartRecord"
+      @click="start"
+    >Record</button>
   </div>
 </template>
 
@@ -39,3 +49,8 @@ export default {
   },
 };
 </script>
+<style scoped>
+  button {
+    user-select: none;
+  }
+</style>
