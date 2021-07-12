@@ -15,6 +15,7 @@ const click = async (buttonName) => {
   button.trigger('click');
   await page.vm.$nextTick();
 };
+const keyDown = (key) => window.dispatchEvent(new KeyboardEvent('keydown', { key }));
 const expectItem = (name) => {
   const component = page.find(`[test-id="${name}"]`);
   const compExists = component.exists();
@@ -40,8 +41,7 @@ const simulateAudioData = (data) => {
 
 describe('RecorderComponent.vue', () => {
   beforeEach(() => {
-    fakeRecorder.start.mockClear();
-    fakeRecorder.stop.mockClear();
+    jest.clearAllMocks();
     page = shallowMount(RecorderComponent, {
       propsData: {
         record: fakeRecorder,
@@ -55,19 +55,23 @@ describe('RecorderComponent.vue', () => {
   it('displays "start record" button', () => {
     expect(page.find('[test-id="StartRecord"]').exists()).toBe(true);
   });
-  it('starts a recording when clicking "start record" button', () => {
+  it('starts a new recording when clicking "start record" button', () => {
     expect(fakeRecorder.start).not.toHaveBeenCalled();
     click('StartRecord');
     expect(fakeRecorder.start).toHaveBeenCalled();
   });
-  it('should start a recording when pressing the SPACE button', () => {
+  it('starts recording when pressing the SPACE button', () => {
     expect(fakeRecorder.start).not.toHaveBeenCalled();
-    window.dispatchEvent(new KeyboardEvent('keydown', {
-      key: ' ',
-    }));
+    keyDown(' ');
     expect(fakeRecorder.start).toHaveBeenCalled();
   });
-  it('should stop a recording when releasing the SPACE button', () => {
+  it('should not start recording twice', () => {
+    keyDown(' ');
+    expect(fakeRecorder.start).toHaveBeenCalledTimes(1);
+    keyDown(' ');
+    expect(fakeRecorder.start).toHaveBeenCalledTimes(1);
+  });
+  it('stops recording when releasing the SPACE button', () => {
     window.dispatchEvent(new KeyboardEvent('keydown', {
       key: ' ',
     }));

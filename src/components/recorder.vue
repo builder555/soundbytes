@@ -15,6 +15,7 @@ export default {
   }),
   methods: {
     start() {
+      if (this.isRecording) return;
       this.isRecording = true;
       this.record.start();
       this.$emit('start', `recording-${this.recordingNumber}`);
